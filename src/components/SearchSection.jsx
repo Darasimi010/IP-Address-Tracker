@@ -23,7 +23,7 @@ export default function SearchSection({ query, setQuery, fetchIpData }) {
               onChange={(e) => setQuery(e.target.value)}
               name="ip-address-input"
               id="ip-address-input"
-              className="p-3 w-96 rounded-l-lg border-none bg-white text-gray-600"
+              className="p-3 max-w-96 md:min-w-96 rounded-l-lg border-none bg-white text-gray-600"
             />
 
             <button

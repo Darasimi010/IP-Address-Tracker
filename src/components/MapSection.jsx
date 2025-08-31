@@ -1,3 +1,25 @@
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
+
+function ResizeHandler() {
+  const map = useMap();
+  useEffect(() => {
+    const onResize = () => map.invalidateSize();
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [map]);
+  return null;
+}
+
+function Recenter({ lat, lng }) {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng]);
+  }, [lat, lng, map]);
+  return null;
+}
+
 export default function MapSection({
   ipData,
   MapContainer,
@@ -48,8 +70,11 @@ export default function MapSection({
                 center={[ipData.location.lat, ipData.location.lng]}
                 zoom={15}
                 scrollWheelZoom={true}
-                className="w-full h-[400px] rounded-xl shadow-md"
+                className="w-full rounded-xl min-h-[300px] h-[62vh] md:h-[66vh] lg:h-[68vh] xl:h-[70vh] shadow-md"
+                style={{ zIndex: 0 }}
               >
+                <ResizeHandler />
+                <Recenter lat={ipData.location.lat} lng={ipData.location.lng} />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={[ipData.location.lat, ipData.location.lng]}>
                   <Popup>{ipData.location.city}</Popup>
