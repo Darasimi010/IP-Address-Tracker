@@ -1,5 +1,7 @@
+import L from "leaflet";
 import { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import markerIcon from "../assets/icon-location.svg";
 
 function ResizeHandler() {
   const map = useMap();
@@ -20,13 +22,11 @@ function Recenter({ lat, lng }) {
   return null;
 }
 
-export default function MapSection({
-  ipData,
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-}) {
+const customIcon = L.icon({
+  iconUrl: markerIcon,
+});
+
+export default function MapSection({ ipData }) {
   return (
     <>
       <div className="relative w-full">
@@ -76,7 +76,10 @@ export default function MapSection({
                 <ResizeHandler />
                 <Recenter lat={ipData.location.lat} lng={ipData.location.lng} />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={[ipData.location.lat, ipData.location.lng]}>
+                <Marker
+                  position={[ipData.location.lat, ipData.location.lng]}
+                  icon={customIcon}
+                >
                   <Popup>{ipData.location.city}</Popup>
                 </Marker>
               </MapContainer>
